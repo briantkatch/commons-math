@@ -68,6 +68,27 @@ public class SimplexOptimizerNelderMeadTest {
         Assert.assertTrue(optimizer.getEvaluations() < 90);
     }
 
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    @Test
+    public void testMinimize1IterationsUpdated() {
+        SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
+        final FourExtrema fourExtrema = new FourExtrema();
+
+        final PointValuePair optimum
+            = optimizer.optimize(new MaxEval(100),
+                                 new ObjectiveFunction(fourExtrema),
+                                 GoalType.MINIMIZE,
+                                 new InitialGuess(new double[] { -3, 0 }),
+                                 new NelderMeadSimplex(new double[] { 0.2, 0.2 }));
+        Assert.assertEquals(fourExtrema.xM, optimum.getPoint()[0], 2e-7);
+        Assert.assertEquals(fourExtrema.yP, optimum.getPoint()[1], 2e-5);
+        Assert.assertEquals(fourExtrema.valueXmYp, optimum.getValue(), 6e-12);
+        Assert.assertTrue(optimizer.getEvaluations() > 60);
+        Assert.assertTrue(optimizer.getEvaluations() < 90);
+        Assert.assertTrue(optimizer.getIterations() > 0);
+    }
+
     @Test
     public void testMinimize2() {
         SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
@@ -84,6 +105,27 @@ public class SimplexOptimizerNelderMeadTest {
         Assert.assertEquals(fourExtrema.valueXpYm, optimum.getValue(), 1e-11);
         Assert.assertTrue(optimizer.getEvaluations() > 60);
         Assert.assertTrue(optimizer.getEvaluations() < 90);
+    }
+
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    @Test
+    public void testMinimize2IterationsUpdated() {
+        SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
+        final FourExtrema fourExtrema = new FourExtrema();
+
+        final PointValuePair optimum
+            = optimizer.optimize(new MaxEval(100),
+                                 new ObjectiveFunction(fourExtrema),
+                                 GoalType.MINIMIZE,
+                                 new InitialGuess(new double[] { 1, 0 }),
+                                 new NelderMeadSimplex(new double[] { 0.2, 0.2 }));
+        Assert.assertEquals(fourExtrema.xP, optimum.getPoint()[0], 5e-6);
+        Assert.assertEquals(fourExtrema.yM, optimum.getPoint()[1], 6e-6);
+        Assert.assertEquals(fourExtrema.valueXpYm, optimum.getValue(), 1e-11);
+        Assert.assertTrue(optimizer.getEvaluations() > 60);
+        Assert.assertTrue(optimizer.getEvaluations() < 90);
+        Assert.assertTrue(optimizer.getIterations() > 0);
     }
 
     @Test
@@ -104,6 +146,27 @@ public class SimplexOptimizerNelderMeadTest {
         Assert.assertTrue(optimizer.getEvaluations() < 90);
     }
 
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    @Test
+    public void testMaximize1IterationsUpdated() {
+        SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
+        final FourExtrema fourExtrema = new FourExtrema();
+
+        final PointValuePair optimum
+            = optimizer.optimize(new MaxEval(100),
+                                 new ObjectiveFunction(fourExtrema),
+                                 GoalType.MAXIMIZE,
+                                 new InitialGuess(new double[] { -3, 0 }),
+                                 new NelderMeadSimplex(new double[] { 0.2, 0.2 }));
+        Assert.assertEquals(fourExtrema.xM, optimum.getPoint()[0], 1e-5);
+        Assert.assertEquals(fourExtrema.yM, optimum.getPoint()[1], 3e-6);
+        Assert.assertEquals(fourExtrema.valueXmYm, optimum.getValue(), 3e-12);
+        Assert.assertTrue(optimizer.getEvaluations() > 60);
+        Assert.assertTrue(optimizer.getEvaluations() < 90);
+        Assert.assertTrue(optimizer.getIterations() > 0);
+    }
+
     @Test
     public void testMaximize2() {
         SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
@@ -120,6 +183,27 @@ public class SimplexOptimizerNelderMeadTest {
         Assert.assertEquals(fourExtrema.valueXpYp, optimum.getValue(), 7e-12);
         Assert.assertTrue(optimizer.getEvaluations() > 60);
         Assert.assertTrue(optimizer.getEvaluations() < 90);
+    }
+
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    @Test
+    public void testMaximize2IterationsUpdated() {
+        SimplexOptimizer optimizer = new SimplexOptimizer(1e-10, 1e-30);
+        final FourExtrema fourExtrema = new FourExtrema();
+
+        final PointValuePair optimum
+            = optimizer.optimize(new MaxEval(100),
+                                 new ObjectiveFunction(fourExtrema),
+                                 GoalType.MAXIMIZE,
+                                 new InitialGuess(new double[] { 1, 0 }),
+                                 new NelderMeadSimplex(new double[] { 0.2, 0.2 }));
+        Assert.assertEquals(fourExtrema.xP, optimum.getPoint()[0], 4e-6);
+        Assert.assertEquals(fourExtrema.yP, optimum.getPoint()[1], 5e-6);
+        Assert.assertEquals(fourExtrema.valueXpYp, optimum.getValue(), 7e-12);
+        Assert.assertTrue(optimizer.getEvaluations() > 60);
+        Assert.assertTrue(optimizer.getEvaluations() < 90);
+        Assert.assertTrue(optimizer.getEvaluations() > 0);
     }
 
     @Test

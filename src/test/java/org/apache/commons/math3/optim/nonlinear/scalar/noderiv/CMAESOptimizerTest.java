@@ -512,6 +512,65 @@ public class CMAESOptimizerTest {
         }
     }
 
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    /**
+     * @param func Function to optimize.
+     * @param startPoint Starting point.
+     * @param inSigma Individual input sigma.
+     * @param boundaries Upper / lower point limit.
+     * @param goal Minimization or maximization.
+     * @param lambda Population size used for offspring.
+     * @param isActive Covariance update mechanism.
+     * @param diagonalOnly Simplified covariance update.
+     * @param stopValue Termination criteria for optimization.
+     * @param fTol Tolerance relative error on the objective function.
+     * @param pointTol Tolerance for checking that the optimum is correct.
+     * @param maxEvaluations Maximum number of evaluations.
+     * @param expected Expected point / value.
+     */
+    private void doTestIterationsUpdated(MultivariateFunction func,
+                        double[] startPoint,
+                        double[] inSigma,
+                        double[][] boundaries,
+                        GoalType goal,
+                        int lambda,
+                        boolean isActive,
+                        int diagonalOnly,
+                        double stopValue,
+                        double fTol,
+                        double pointTol,
+                        int maxEvaluations,
+                        PointValuePair expected) {
+        int dim = startPoint.length;
+        // test diagonalOnly = 0 - slow but normally fewer feval#
+        CMAESOptimizer optim = new CMAESOptimizer(30000, stopValue, isActive, diagonalOnly,
+                                                  0, new MersenneTwister(), false, null);
+        PointValuePair result = boundaries == null ?
+            optim.optimize(new MaxEval(maxEvaluations),
+                           new ObjectiveFunction(func),
+                           goal,
+                           new InitialGuess(startPoint),
+                           SimpleBounds.unbounded(dim),
+                           new CMAESOptimizer.Sigma(inSigma),
+                           new CMAESOptimizer.PopulationSize(lambda)) :
+            optim.optimize(new MaxEval(maxEvaluations),
+                           new ObjectiveFunction(func),
+                           goal,
+                           new SimpleBounds(boundaries[0],
+                                            boundaries[1]),
+                           new InitialGuess(startPoint),
+                           new CMAESOptimizer.Sigma(inSigma),
+                           new CMAESOptimizer.PopulationSize(lambda));
+
+        // System.out.println("sol=" + Arrays.toString(result.getPoint()));
+        Assert.assertEquals(expected.getValue(), result.getValue(), fTol);
+        for (int i = 0; i < dim; i++) {
+            Assert.assertEquals(expected.getPoint()[i], result.getPoint()[i], pointTol);
+        }
+        Assert.assertTrue(optim.getIterations() > 0);
+    }
+
     private static double[] point(int n, double value) {
         double[] ds = new double[n];
         Arrays.fill(ds, value);

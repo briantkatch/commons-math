@@ -231,6 +231,38 @@ public class PowellOptimizerTest {
         }
     }
 
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    /**
+     * @param func Function to optimize.
+     * @param optimum Expected optimum.
+     * @param init Starting point.
+     * @param goal Minimization or maximization.
+     * @param fTol Tolerance (relative error on the objective function) for
+     * "Powell" algorithm.
+     * @param pointTol Tolerance for checking that the optimum is correct.
+     */
+    private void doTestIterationsUpdated(MultivariateFunction func,
+                        double[] optimum,
+                        double[] init,
+                        GoalType goal,
+                        double fTol,
+                        double pointTol) {
+        final PowellOptimizer optim = new PowellOptimizer(fTol, Math.ulp(1d));
+
+        final PointValuePair result = optim.optimize(new MaxEval(1000),
+                                                     new ObjectiveFunction(func),
+                                                     goal,
+                                                     new InitialGuess(init));
+        final double[] point = result.getPoint();
+
+        for (int i = 0, dim = optimum.length; i < dim; i++) {
+            Assert.assertEquals("found[" + i + "]=" + point[i] + " value=" + result.getValue(),
+                                optimum[i], point[i], pointTol);
+        }
+        Assert.assertTrue(optim.getIterations() > 0);
+    }
+
     /**
      * @param func Function to optimize.
      * @param optimum Expected optimum.

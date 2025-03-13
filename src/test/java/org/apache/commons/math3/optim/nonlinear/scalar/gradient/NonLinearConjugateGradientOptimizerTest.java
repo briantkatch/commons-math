@@ -138,6 +138,25 @@ public class NonLinearConjugateGradientOptimizerTest {
         Assert.assertEquals(0.0, optimum.getValue(), 1.0e-10);
     }
 
+    // f83bbc1d68bd457dfccd370afb248126ce031eb6
+
+    @Test
+    public void testTrivialIterationsUpdated() {
+        LinearProblem problem
+            = new LinearProblem(new double[][] { { 2 } }, new double[] { 3 });
+        NonLinearConjugateGradientOptimizer optimizer
+            = new NonLinearConjugateGradientOptimizer(NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE,
+                                                      new SimpleValueChecker(1e-6, 1e-6));
+        PointValuePair optimum
+            = optimizer.optimize(new MaxEval(100),
+                                 problem.getObjectiveFunction(),
+                                 problem.getObjectiveFunctionGradient(),
+                                 GoalType.MINIMIZE,
+                                 new InitialGuess(new double[] { 0 }));
+        Assert.assertTrue(optimizer.getIterations() > 0);
+    }
+
+
     @Test
     public void testColumnsPermutation() {
         LinearProblem problem
