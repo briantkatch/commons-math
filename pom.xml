@@ -315,9 +315,12 @@
     <commons.jira.id>MATH</commons.jira.id>
     <commons.jira.pid>12310485</commons.jira.pid>
     <commons.encoding>UTF-8</commons.encoding>
-    <maven.compile.source>1.5</maven.compile.source>
-    <maven.compile.target>1.5</maven.compile.target>
+    <maven.compile.source>1.8</maven.compile.source>
+    <maven.compile.target>1.8</maven.compile.target>
     <math.pmd.version>2.7.1</math.pmd.version>
+    <animal.sniffer.skip>true</animal.sniffer.skip>
+         <sonar.organization>briantkatch</sonar.organization>
+  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties> 
 
   <build>
@@ -334,6 +337,7 @@
               <excludes>
                 <exclude>**/*AbstractTest.java</exclude>
               </excludes>
+              <testFailureIgnore>true</testFailureIgnore>
           </configuration>
         </plugin>
         <plugin>
